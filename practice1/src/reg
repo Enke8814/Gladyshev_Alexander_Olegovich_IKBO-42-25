@@ -1,0 +1,32 @@
+#!/bin/bash
+# Задача 5. Регистрация пользовательской команды:
+# выставить права на выполнение и скопировать в /usr/local/bin.
+# Использование: ./reg banner
+
+set -euo pipefail
+
+BIN_DIR="/usr/local/bin"
+
+if [ "$#" -ne 1 ]; then
+    echo "Использование: $0 <файл-программы>" >&2
+    exit 1
+fi
+
+prog="$1"
+
+if [ ! -f "$prog" ]; then
+    echo "Ошибка: файл '$prog' не найден" >&2
+    exit 1
+fi
+
+# Права 755: владельцу — чтение/запись/выполнение, остальным — чтение/выполнение.
+chmod 755 "$prog"
+
+# Если скрипт запущен не от root, используем sudo.
+if [ "$(id -u)" -eq 0 ]; then
+    cp "$prog" "$BIN_DIR/"
+else
+    sudo cp "$prog" "$BIN_DIR/"
+fi
+
+echo "Команда '$(basename "$prog")' зарегистрирована в $BIN_DIR"
