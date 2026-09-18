@@ -1,1 +1,1 @@
-# Gladyshev_Alexander_Olegovich_IKBO-42-25
+практики по конфигурационному управлению
