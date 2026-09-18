@@ -183,3 +183,49 @@ echo "Команда '$(basename "$prog")' зарегистрирована в $
 **Запуск:** `./src/reg src/banner`, затем проверка `banner "reg works"` без `./`
 
 ![Задача 5](screens/06.png)
+
+---
+
+## Задача 6
+
+**Условие.** Написать программу для проверки наличия комментария в первой строке
+файлов с расширением c, js и py.
+
+**Решение.** `find` собирает нужные файлы, `head -n 1` берёт первую строку.
+Синтаксис комментария зависит от языка: в Python это `#`, в C и JavaScript — `//`
+или `/*`. Ключ `-print0` у `find` и `read -r -d ''` нужны, чтобы корректно
+обрабатывались имена файлов с пробелами.
+
+Файл [`src/task6.sh`](src/task6.sh):
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+dir="${1:-.}"
+
+if [ ! -d "$dir" ]; then
+    echo "Ошибка: '$dir' не каталог" >&2
+    exit 1
+fi
+
+find "$dir" -type f \( -name '*.c' -o -name '*.js' -o -name '*.py' \) -print0 \
+| while IFS= read -r -d '' file; do
+    first_line=$(head -n 1 "$file")
+
+    case "$file" in
+        *.py) pattern='^[[:space:]]*#' ;;
+        *)    pattern='^[[:space:]]*(//|/\*)' ;;
+    esac
+
+    if printf '%s\n' "$first_line" | grep -Eq "$pattern"; then
+        echo "есть комментарий : $file"
+    else
+        echo "нет комментария  : $file"
+    fi
+done
+```
+
+**Запуск:** `./src/task6.sh demo`
+
+![Задача 6](screens/07.png)
