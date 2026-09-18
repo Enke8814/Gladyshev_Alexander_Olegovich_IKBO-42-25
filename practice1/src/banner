@@ -1,0 +1,20 @@
+#!/bin/bash
+# Задача 3. Вывод текста в рамке. Ширина рамки зависит от длины текста.
+# Использование: ./banner "Hello from RTU MIREA!"
+
+set -euo pipefail
+
+if [ "$#" -eq 0 ]; then
+    echo "Использование: $0 <текст>" >&2
+    exit 1
+fi
+
+text="$*"
+width=$((${#text} + 2))
+
+# Строка из width дефисов: печатаем width пробелов и заменяем их на '-'.
+line=$(printf '%*s' "$width" '' | tr ' ' '-')
+
+printf '+%s+\n' "$line"
+printf '| %s |\n' "$text"
+printf '+%s+\n' "$line"

@@ -62,3 +62,43 @@ grep -v '^[[:space:]]*#' "$PROTO_FILE" \
 **Запуск:** `./src/task2.sh`
 
 ![Задача 2](screens/02.png)
+
+---
+
+## Задача 3
+
+**Условие.** Написать программу `banner` средствами bash для вывода текста в рамке;
+размер баннера должен меняться.
+
+**Решение.** Ширина рамки равна длине текста плюс два пробела по краям. Длина строки
+берётся встроенным средством bash `${#text}`. Строка из дефисов получается так:
+`printf '%*s'` печатает нужное количество пробелов, а `tr` заменяет их на `-`.
+
+Файл [`src/banner`](src/banner):
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+if [ "$#" -eq 0 ]; then
+    echo "Использование: $0 <текст>" >&2
+    exit 1
+fi
+
+text="$*"
+width=$((${#text} + 2))
+
+line=$(printf '%*s' "$width" '' | tr ' ' '-')
+
+printf '+%s+\n' "$line"
+printf '| %s |\n' "$text"
+printf '+%s+\n' "$line"
+```
+
+**Запуск:** `./src/banner "Hello from RTU MIREA!"` и `./src/banner "OK"`
+
+![Задача 3](screens/03.png)
+
+**Проверка в ShellCheck.** Замечаний нет.
+
+![ShellCheck](screens/04.png)
