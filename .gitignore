@@ -5,3 +5,5 @@ practice2/demo/*.whl
 practice2/demo/*.tar.gz
 practice2/demo/mpl/
 practice2/demo/node_modules/
+practice2/demo/*.tgz
+practice2/demo/express-pkg/
