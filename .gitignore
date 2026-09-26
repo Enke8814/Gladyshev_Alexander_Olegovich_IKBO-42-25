@@ -1,3 +1,7 @@
 practice1/demo/out.txt
 practice1/*_files.tar
 practice1/texts.tar
+practice2/demo/*.whl
+practice2/demo/*.tar.gz
+practice2/demo/mpl/
+practice2/demo/node_modules/
